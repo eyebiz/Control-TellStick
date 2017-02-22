@@ -39,7 +39,7 @@ namespace Control_TellStick
                     comboBoxDevices.Items.Add(td.name);
                 }
                 comboBoxDevices.SelectedIndex = 0;
-                btnGetDevices.Enabled = true;
+                btnDeviceMoreInfo.Enabled = true;
             }
             catch (Exception ex)
             {
