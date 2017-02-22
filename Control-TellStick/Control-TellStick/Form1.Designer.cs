@@ -58,6 +58,8 @@ namespace Control_TellStick
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tsProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.tsStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tbSensorData = new System.Windows.Forms.TextBox();
+            this.labelSensorData = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabDevices.SuspendLayout();
             this.tabSensors.SuspendLayout();
@@ -104,6 +106,7 @@ namespace Control_TellStick
             // 
             // btnDeviceMoreInfo
             // 
+            this.btnDeviceMoreInfo.Enabled = false;
             this.btnDeviceMoreInfo.Location = new System.Drawing.Point(10, 84);
             this.btnDeviceMoreInfo.Name = "btnDeviceMoreInfo";
             this.btnDeviceMoreInfo.Size = new System.Drawing.Size(75, 23);
@@ -197,6 +200,8 @@ namespace Control_TellStick
             // tabSensors
             // 
             this.tabSensors.BackColor = System.Drawing.Color.Transparent;
+            this.tabSensors.Controls.Add(this.tbSensorData);
+            this.tabSensors.Controls.Add(this.labelSensorData);
             this.tabSensors.Controls.Add(this.tbSensorHumidity);
             this.tabSensors.Controls.Add(this.labelSensorHumidity);
             this.tabSensors.Controls.Add(this.tbSensorMoreInfo);
@@ -241,6 +246,7 @@ namespace Control_TellStick
             // 
             // btnSensorMoreInfo
             // 
+            this.btnSensorMoreInfo.Enabled = false;
             this.btnSensorMoreInfo.Location = new System.Drawing.Point(10, 84);
             this.btnSensorMoreInfo.Name = "btnSensorMoreInfo";
             this.btnSensorMoreInfo.Size = new System.Drawing.Size(75, 23);
@@ -333,6 +339,23 @@ namespace Control_TellStick
             this.tsStatus.Size = new System.Drawing.Size(29, 17);
             this.tsStatus.Text = "Idle.";
             // 
+            // tbSensorData
+            // 
+            this.tbSensorData.Location = new System.Drawing.Point(344, 58);
+            this.tbSensorData.Name = "tbSensorData";
+            this.tbSensorData.ReadOnly = true;
+            this.tbSensorData.Size = new System.Drawing.Size(200, 20);
+            this.tbSensorData.TabIndex = 25;
+            // 
+            // labelSensorData
+            // 
+            this.labelSensorData.AutoSize = true;
+            this.labelSensorData.Location = new System.Drawing.Point(340, 43);
+            this.labelSensorData.Name = "labelSensorData";
+            this.labelSensorData.Size = new System.Drawing.Size(30, 13);
+            this.labelSensorData.TabIndex = 24;
+            this.labelSensorData.Text = "Data";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -340,8 +363,11 @@ namespace Control_TellStick
             this.ClientSize = new System.Drawing.Size(668, 328);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Control-TellStick";
             this.tabControl1.ResumeLayout(false);
             this.tabDevices.ResumeLayout(false);
             this.tabDevices.PerformLayout();
@@ -384,6 +410,8 @@ namespace Control_TellStick
         private System.Windows.Forms.ComboBox comboBoxSensors;
         private System.Windows.Forms.TextBox tbSensorHumidity;
         private System.Windows.Forms.Label labelSensorHumidity;
+        private System.Windows.Forms.TextBox tbSensorData;
+        private System.Windows.Forms.Label labelSensorData;
     }
 }
 

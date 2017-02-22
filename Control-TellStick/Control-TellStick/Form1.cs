@@ -34,20 +34,15 @@ namespace Control_TellStick
             {
                 tellDevices = tellFunc.GetListOfDevices();
                 comboBoxDevices.Items.Clear();
-
                 foreach (Device td in tellDevices.device)
                 {
                     comboBoxDevices.Items.Add(td.name);
-
-                    //TBText(td.name + " " + td.id + " " + td.state + " " + td.methods + " " + td.statevalue);
                 }
                 comboBoxDevices.SelectedIndex = 0;
-                //tbDeviceID.Text = tellDevices.device[0].id.ToString();
-                //tbDeviceState.Text = stateToString(tellDevices.device[0].state);
+                btnGetDevices.Enabled = true;
             }
             catch (Exception ex)
             {
-
                 statusStrip.Text = (ex.Message);
             }
         }
@@ -57,6 +52,12 @@ namespace Control_TellStick
             if (state == 2) return "Off";
             if (state == 1) return "On";
             else return "Other";
+        }
+
+        private string scaleToString(int scale)
+        {
+            if (scale == 0) return " °C";
+            else return " °F";
         }
 
         private void comboBoxDevices_SelectedIndexChanged(object sender, EventArgs e)
@@ -70,9 +71,6 @@ namespace Control_TellStick
             tellFunc.TurnOff(Int32.Parse(tbDeviceID.Text));
             backgroundThread = new Thread(() => refreshDevice(Int32.Parse(tbDeviceID.Text)));
             backgroundThread.Start();
-            //tbDeviceState.Text = stateToString(tellDevices.device[comboBoxDevices.SelectedIndex].state);
-            //MessageBox.Show(tellDevices.device[comboBoxDevices.SelectedIndex].name);
-
         }
 
         private void btnDeviceOn_Click(object sender, EventArgs e)
@@ -80,10 +78,12 @@ namespace Control_TellStick
             tellFunc.TurnOn(Int32.Parse(tbDeviceID.Text));
             backgroundThread = new Thread(() => refreshDevice(Int32.Parse(tbDeviceID.Text)));
             backgroundThread.Start();
+        }
 
-            //refreshDeviceList();
-
-            //MessageBox.Show(tellDevices.device[comboBoxDevices.SelectedIndex].name);
+        private void btnDeviceMoreInfo_Click(object sender, EventArgs e)
+        {
+            DeviceData device = tellFunc.GetDeviceData(Int32.Parse(tbDeviceID.Text));
+            tbDeviceMoreInfo.Text = device.id + " " + device.name + " " + device.protocol + " " + device.state;
         }
 
         private void refreshDeviceList()
@@ -93,7 +93,6 @@ namespace Control_TellStick
             for (int i = 0; i < 10; i++)
             {
                 Invoke(new UpdateUI(() => setStatus(statusText, true)));
-                //statusStripLabel.Text = statusText;
                 Thread.Sleep(500);
                 statusText += ".";
             }
@@ -108,7 +107,6 @@ namespace Control_TellStick
             for (int i = 0; i < 3; i++)
             {
                 Invoke(new UpdateUI(() => setStatus(statusText, true)));
-                //statusStripLabel.Text = statusText;
                 Thread.Sleep(500);
                 statusText += ".";
             }
@@ -143,30 +141,18 @@ namespace Control_TellStick
             Application.DoEvents();
         }
 
-        private void btnDeviceMoreInfo_Click(object sender, EventArgs e)
-        {
-            DeviceData device = tellFunc.GetDeviceData(Int32.Parse(tbDeviceID.Text));
-            tbDeviceMoreInfo.Text = device.id + " " + device.name + " " + device.protocol + " " + device.state;
-        }
-
         private void btnGetSensors_Click(object sender, EventArgs e)
         {
             try
             {
                 tellSensors = tellFunc.GetListOfSensors();
                 comboBoxSensors.Items.Clear();
-
                 foreach (Sensor ts in tellSensors.sensor)
                 {
                     comboBoxSensors.Items.Add(ts.name);
                 }
                 comboBoxSensors.SelectedIndex = 0;
-                //MessageBox.Show(tellSensors.sensor.Count.ToString() + " " + tellSensors.sensor[3].id);
-                //SensorData sd = tellFunc.GetSensorData(tellSensors.sensor[comboBoxSensors.SelectedIndex].id);
-                //tbSensorID.Text = sd.id.ToString();
-                
-                //tbSensorTemp.Text = sd.data[0].value.ToString();
-                //tbSensorHumidity.Text = sd.data[1].value.ToString();
+                btnSensorMoreInfo.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -178,18 +164,25 @@ namespace Control_TellStick
         {
             SensorData sd = tellFunc.GetSensorData(tellSensors.sensor[comboBoxSensors.SelectedIndex].id);
             tbSensorID.Text = sd.id.ToString();
-            tbSensorTemp.Text = sd.data[0].value.ToString();
-            if (sd.data.Count > 1)
-                tbSensorHumidity.Text = sd.data[1].value.ToString();
-            else tbSensorHumidity.Text = "";
+            //tbSensorTemp.Text = sd.data[0].value.ToString() + " °C";
+            //if (sd.data.Count > 1)
+            //    tbSensorHumidity.Text = sd.data[1].value.ToString() + " %";
+            //else tbSensorHumidity.Text = "";
+            string sensorScale = "";
+            tbSensorData.Text = "";
+            foreach (Data d in sd.data)
+            {
+                if (d.name == "temp") sensorScale = " °C";
+                if (d.name == "humidity") sensorScale = " %";
+                tbSensorData.Text += Program.FirstLetterToUpper(d.name) + ": " + d.value + sensorScale + " | ";
+            }
         }
 
         private void btnSensorMoreInfo_Click(object sender, EventArgs e)
         {
             SensorData sd = tellFunc.GetSensorData(tellSensors.sensor[comboBoxSensors.SelectedIndex].id);
-            tbSensorMoreInfo.Text = sd.id + " " + sd.name + " " + sd.protocol;
+            tbSensorMoreInfo.Text = sd.id + " " + sd.name + " " + sd.model + " " + sd.protocol + " " + sd.data[0].name;
         }
-
     }
 }
 
