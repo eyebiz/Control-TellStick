@@ -62,6 +62,7 @@ namespace Control_TellStick
 
         private void comboBoxDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
+            tellDevices = tellFunc.GetListOfDevices();
             tbDeviceID.Text = tellDevices.device[comboBoxDevices.SelectedIndex].id.ToString();
             tbDeviceState.Text = stateToString(tellDevices.device[comboBoxDevices.SelectedIndex].state);
         }
